@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const NotImplemented = require("../errors/notImplemented.error");
+const NotFoundError = require("../errors/notFound.error");
 const { ProblemService } = require("../services/");
 const { ProblemRepository } = require("../repositories");
 
@@ -27,6 +28,9 @@ async function addProblem(req, res, next) {
 async function getProblem(req, res, next) {
   try {
     const problem = await problemService.getProblem(req.params.id);
+    if (!problem) {
+      throw new NotFoundError();
+    }
     return res.status(StatusCodes.OK).json({
       success: true,
       message: "Successfully fetched a problem",
