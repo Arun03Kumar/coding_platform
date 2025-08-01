@@ -5,6 +5,8 @@ const apiRouter = require("./routes");
 const errorHandler = require("./utils/errorHandler");
 const connect_db = require("./config/db.config");
 
+// const mongoose = require("mongoose");
+
 const app = express();
 
 app.use(bodyparser.json());
@@ -25,4 +27,9 @@ app.listen(PORT, async () => {
   console.log("server started at port:", PORT);
   await connect_db();
   console.log("successfully connected to DB");
+
+  // const Cat = mongoose.model("Cat", { name: String });
+
+  // const kitty = new Cat({ name: "Zildjian" });
+  // kitty.save().then(() => console.log("meow"));
 });
