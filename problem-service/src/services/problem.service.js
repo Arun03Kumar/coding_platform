@@ -18,6 +18,16 @@ class ProblemService {
     }
   }
 
+  async getProblem(id) {
+    try {
+      const problem = await this.problemRepository.getProblem(id);
+      return problem;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
   async getAllProblems() {
     try {
       const problems = await this.problemRepository.getAllProblems();

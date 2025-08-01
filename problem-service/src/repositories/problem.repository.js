@@ -15,6 +15,12 @@ class ProblemRepository {
     }
   }
 
+  async getProblem(id) {
+    const problem = await Problem.findById(id);
+    console.log(problem);
+    return problem;
+  }
+
   async getAllProblems() {
     try {
       const problems = await Problem.find({});
