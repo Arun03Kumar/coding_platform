@@ -30,6 +30,15 @@ class ProblemRepository {
       throw err;
     }
   }
+
+  async deleteProblem(id) {
+    const deletedProblem = await Problem.findByIdAndDelete(id);
+    if (!deletedProblem) {
+      console.log("not found problem in db");
+      throw new Error("Not found in DB");
+    }
+    return deletedProblem;
+  }
 }
 
 module.exports = ProblemRepository;

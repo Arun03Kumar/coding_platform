@@ -56,9 +56,18 @@ async function getProblems(req, res, next) {
   }
 }
 
-function deleteProblems(req, res, next) {
+async function deleteProblem(req, res, next) {
   try {
-    throw new NotImplemented("deleteProblems");
+    const deletedProblem = await problemService.deleteProblem(req.params.id);
+    if (!deleteProblem) {
+      throw new NotFoundError();
+    }
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Successfully deleted the problem",
+      error: {},
+      data: deletedProblem,
+    });
   } catch (err) {
     next(err);
   }
@@ -76,7 +85,7 @@ module.exports = {
   addProblem,
   getProblem,
   getProblems,
-  deleteProblems,
+  deleteProblem,
   updateProblems,
   pingProblemController,
 };
