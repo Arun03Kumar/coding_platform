@@ -1,14 +1,17 @@
-import { PYTHON_IMAGE } from "../utils/constants.js";
+import { JAVA_IMAGE } from "../utils/constants.js";
 import createContainer from "./containerFactory.js";
 import decodeDocekerStream from "./dockerHelper.js";
 
-export async function runPython(code: string, inputData: string) {
+export async function runJava(code: string, inputData: string) {
   const rawLogBuffer: Buffer[] = [];
   const runCommand = `echo '${code.replace(
     /'/g,
     `'\\"`
-  )}' > test.py && echo '${inputData.replace(/'/g, `'\\"`)}' | python3 test.py`;
-  const pythonDockerContainer = await createContainer(PYTHON_IMAGE, [
+  )}' > Main.java && javac Main.java && echo '${inputData.replace(
+    /'/g,
+    `'\\"`
+  )}' | java Main`;
+  const javaDockerContainer = await createContainer(JAVA_IMAGE, [
     "/bin/sh",
     "-c",
     runCommand,
@@ -19,8 +22,8 @@ export async function runPython(code: string, inputData: string) {
   //     code,
   //     "stty -echo",
   //   ]);
-  await pythonDockerContainer.start();
-  const loggerStream = await pythonDockerContainer.logs({
+  await javaDockerContainer.start();
+  const loggerStream = await javaDockerContainer.logs({
     stdout: true,
     stderr: true,
     timestamps: false,
@@ -35,12 +38,12 @@ export async function runPython(code: string, inputData: string) {
     loggerStream.on("end", () => {
       const completeBuffer = Buffer.concat(rawLogBuffer);
       const decodedStream = decodeDocekerStream(completeBuffer);
-      console.log(decodedStream);
+      console.log(decodedStream.stdout);
       res(decodeDocekerStream);
     });
   });
 
-  await pythonDockerContainer.remove();
+  await javaDockerContainer.remove();
 
   //   return pythonDockerContainer;
 }
