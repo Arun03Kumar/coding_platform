@@ -8,6 +8,8 @@ import sampleWorker from "./workers/sampleWorker.js";
 import { runPython } from "./containers/runPythonDocker.js";
 import { runJava } from "./containers/runJavaDocker.js";
 import { runCpp } from "./containers/runCppDocker.js";
+import submissionWorker from "./workers/submissionWorkers.js";
+import submissionQueueProducer from "./producers/submissionQueueProducer.js";
 
 const app = express();
 
@@ -52,19 +54,28 @@ app.listen(PORT, async () => {
   // const testCase = `10`;
   // runJava(code, testCase);
 
-  // const code = `
-  //   #include<iostream>
-  //   using namespace std;
+  const code = `
+    #include<iostream>
+    using namespace std;
 
-  //   int main() {
-  //     int x;
-  //     cin >> x;
-  //     for(int i = 0; i < x; i++) cout << i << endl;
+    int main() {
+      int x;
+      cin >> x;
+      for(int i = 0; i < x; i++) cout << i << endl;
 
-  //     return 0;
-  //   }
-  // `;
+      return 0;
+    }
+  `;
 
-  // const testCase = `10`;
+  const testCase = `10`;
   // runCpp(code, testCase);
+
+  submissionWorker("SubmissionQueue");
+  submissionQueueProducer("SubmissionJob", {
+    "123": {
+      language: "CPP",
+      code,
+      inputCase: testCase,
+    },
+  });
 });

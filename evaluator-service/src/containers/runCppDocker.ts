@@ -34,17 +34,18 @@ export async function runCpp(code: string, inputData: string) {
     rawLogBuffer.push(chunk);
   });
 
-  await new Promise((res, rej) => {
+  const response = await new Promise((res, rej) => {
     loggerStream.on("end", () => {
       const completeBuffer = Buffer.concat(rawLogBuffer);
       const decodedStream = decodeDocekerStream(completeBuffer);
-      console.log(decodedStream.stderr);
-      console.log(decodedStream.stdout);
-      res(decodeDocekerStream);
+      //   console.log(decodedStream.stderr);
+      //   console.log(decodedStream.stdout);
+      res(decodedStream);
     });
   });
 
   await cppDockerContainer.remove();
 
-  //   return pythonDockerContainer;
+  return response;
+  // return pythonDockerContainer;
 }
