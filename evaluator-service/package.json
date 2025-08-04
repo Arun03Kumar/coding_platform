@@ -21,7 +21,9 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@types/dockerode": "^3.3.42",
     "bullmq": "^5.56.9",
+    "dockerode": "^4.0.7",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "ioredis": "^5.7.0",

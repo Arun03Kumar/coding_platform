@@ -5,6 +5,7 @@ import apiRouter from "./routes/index.js";
 import redis from "./config/redisConfig.js";
 import sampleQueueProducer from "./producers/sampleQueueProducer.js";
 import sampleWorker from "./workers/sampleWorker.js";
+import { runPython } from "./containers/runPythonDocker.js";
 
 const app = express();
 
@@ -23,4 +24,13 @@ app.listen(PORT, async () => {
   //   });
 
   //   sampleWorker("SampleQueue");
+
+  //   const code = `x = input()
+  // y = input()
+  // print("val x", x)
+  // print("val y",y)`;
+
+  //   const testCase = `100
+  // 200`;
+  //   runPython(code, testCase);
 });
