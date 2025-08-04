@@ -32,10 +32,16 @@ export async function runPython(code: string, inputData: string) {
     rawLogBuffer.push(chunk);
   });
 
-  loggerStream.on("end", () => {
-    const completeBuffer = Buffer.concat(rawLogBuffer);
-    const decodeStream = decodeDocekerStream(completeBuffer);
-    console.log(decodeStream.stdout);
+  await new Promise((res, rej) => {
+    loggerStream.on("end", () => {
+      const completeBuffer = Buffer.concat(rawLogBuffer);
+      const decodedStream = decodeDocekerStream(completeBuffer);
+      console.log(decodedStream);
+      res(decodeDocekerStream);
+    });
   });
-  return pythonDockerContainer;
+
+  await pythonDockerContainer.remove();
+
+  //   return pythonDockerContainer;
 }
