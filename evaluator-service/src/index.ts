@@ -5,9 +5,9 @@ import apiRouter from "./routes/index.js";
 import redis from "./config/redisConfig.js";
 import sampleQueueProducer from "./producers/sampleQueueProducer.js";
 import sampleWorker from "./workers/sampleWorker.js";
-import { runPython } from "./containers/runPythonDocker.js";
-import { runJava } from "./containers/runJavaDocker.js";
-import { runCpp } from "./containers/runCppDocker.js";
+import { runPython } from "./containers/pythonExecutor.js";
+import { runJava } from "./containers/javaExecutor.js";
+import { runCpp } from "./containers/cppExecutor.js";
 import submissionWorker from "./workers/submissionWorkers.js";
 import submissionQueueProducer from "./producers/submissionQueueProducer.js";
 

@@ -1,7 +1,7 @@
 import type { Job } from "bullmq";
 import type { IJob } from "../types/bullMQJobDefinition.js";
 import type { SubmissionPayload } from "../types/submissionPayload.js";
-import { runCpp } from "../containers/runCppDocker.js";
+import { runCpp } from "../containers/cppExecutor.js";
 
 export default class SubmissionJob implements IJob {
   name: string;
