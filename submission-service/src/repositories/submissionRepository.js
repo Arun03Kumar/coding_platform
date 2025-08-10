@@ -6,8 +6,15 @@ class SubmissionRepository {
   }
 
   async createSubmission(submission) {
-    const response = await this.submissionModel.create(submission);
-    return response;
+    console.log("from", submission);
+    try {
+      const response = await this.submissionModel.create(submission);
+      //   console.log("not coming here ");
+      return response;
+    } catch (error) {
+      console.log("error", error);
+      throw "Not woeking";
+    }
   }
 }
 

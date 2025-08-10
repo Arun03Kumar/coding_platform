@@ -5,13 +5,21 @@ async function pingRequest(req, res) {
 }
 
 async function createSubmission(req, res) {
-  const response = await this.submissionService.addSubmission(req.body);
-  return res.status(201).json({
-    error: {},
-    data: response,
-    success: true,
-    message: "Created submission successfully"
-  })
+  try {
+    const response = await this.submissionService.addSubmission(req.body);
+    if (!response) {
+      console.log("adfjasdk");
+    }
+    return res.status(201).send({
+      error: {},
+      data: response,
+      success: true,
+      message: "Created submission successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    throw "Ncte";
+  }
 }
 
 module.exports = { pingRequest, createSubmission };

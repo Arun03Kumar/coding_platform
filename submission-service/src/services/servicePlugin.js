@@ -3,7 +3,7 @@ const SubmissionService = require("./submissionService");
 async function servicePlugin(fastify, options) {
   fastify.decorate(
     "submissionService",
-    new SubmissionService(this.submissionRepository)
+    new SubmissionService(fastify.submissionRepository)
   );
 }
 
