@@ -46,8 +46,19 @@ class CppExecutor implements CodeExecutorStrategy {
         loggerStream,
         rawLogBuffer
       );
-      return { output: codeResponse, status: "COMPLETED" };
+
+      if (codeResponse.trim() === outputTestCase?.trim()) {
+        return { output: codeResponse, status: "SUCCESS" };
+      } else {
+        return { output: codeResponse, status: "WA" };
+      }
+
+      // return { output: codeResponse, status: "COMPLETED" };
     } catch (error) {
+      console.log(error);
+      if (error === "TLE") {
+        await cppDockerContainer.kill();
+      }
       return { output: error as string, status: "ERROR" };
     } finally {
       await cppDockerContainer.remove();
@@ -59,7 +70,13 @@ class CppExecutor implements CodeExecutorStrategy {
     rawLogBuffer: Buffer[]
   ): Promise<string> {
     return new Promise((res, rej) => {
+      const timeOut = setTimeout(() => {
+        console.log("Timeout reached, ending stream");
+        rej("TLE");
+      }, 2000);
+
       loggerStream.on("end", () => {
+        clearTimeout(timeOut);
         const completeBuffer = Buffer.concat(rawLogBuffer);
         const decodedStream = decodeDocekerStream(completeBuffer);
         console.log(decodedStream);

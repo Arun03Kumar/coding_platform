@@ -29,7 +29,7 @@ export default class SubmissionJob implements IJob {
             inputTestCase,
             outputTestCase
           );
-          if (response.status === "COMPLETED") {
+          if (response.status === "SUCCESS") {
             console.log("execution done");
             console.log(response);
           } else {
