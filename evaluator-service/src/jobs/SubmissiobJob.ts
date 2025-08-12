@@ -13,17 +13,22 @@ export default class SubmissionJob implements IJob {
   }
 
   handle = async (job?: Job): Promise<void> => {
-    // console.log("handle of the job called", job);
+    console.log("handle of the job called");
     if (job && this.payload) {
       const key = Object.keys(this.payload)[0];
       if (key && this.payload[key]) {
         const codeLanguage = this.payload[key].language;
         const code = this.payload[key].code;
         const inputTestCase = this.payload[key].inputCase;
+        const outputTestCase = this.payload[key].outputCase;
 
         const strategy = createExecutor(codeLanguage);
         if (strategy !== null) {
-          const response = await strategy.execute(code, inputTestCase);
+          const response = await strategy.execute(
+            code,
+            inputTestCase,
+            outputTestCase
+          );
           if (response.status === "COMPLETED") {
             console.log("execution done");
             console.log(response);

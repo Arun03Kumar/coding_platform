@@ -7,7 +7,8 @@ import decodeDocekerStream from "./dockerHelper.js";
 class PythonExecutor implements CodeExecutorStrategy {
   async execute(
     code: string,
-    inputTestCase: string
+    inputTestCase: string,
+    outputTestCase?: string
   ): Promise<ExecutionResponse> {
     const rawLogBuffer: Buffer[] = [];
     const runCommand = `echo '${code.replace(
