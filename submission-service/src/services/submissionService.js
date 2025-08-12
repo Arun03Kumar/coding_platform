@@ -11,7 +11,9 @@ class SubmissionService {
   }
 
   async addSubmission(submissionPayload) {
-    const res = await fetchProblemDetails(submissionPayload.problemId);
+    const problemId = submissionPayload.problemId;
+    const userId = submissionPayload.userId;
+    const res = await fetchProblemDetails(problemId);
     // console.log(res);
     if (!res) {
       throw "Submission creation error";
@@ -47,6 +49,8 @@ class SubmissionService {
         language: submission.language,
         inputCase: res.data.testCases[0].input,
         outputCase: res.data.testCases[0].output,
+        userId,
+        submissionId: submission._id,
       },
     });
     return { queueResponse: response, submission };

@@ -2,6 +2,7 @@ import type { Job } from "bullmq";
 import type { IJob } from "../types/bullMQJobDefinition.js";
 import type { SubmissionPayload } from "../types/submissionPayload.js";
 import createExecutor from "../utils/ExecutorFactory.js";
+import evaluationQueueProducer from "../producers/evaluationQueueProducer.js";
 
 export default class SubmissionJob implements IJob {
   name: string;
@@ -29,6 +30,13 @@ export default class SubmissionJob implements IJob {
             inputTestCase,
             outputTestCase
           );
+
+          evaluationQueueProducer({
+            response,
+            userId: this.payload[key].userId,
+            submissionId: this.payload[key].submissionId,
+          });
+
           if (response.status === "SUCCESS") {
             console.log("execution done");
             console.log(response);

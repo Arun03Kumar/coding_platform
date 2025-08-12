@@ -3,6 +3,7 @@ const fastify = require("fastify")({ logger: true });
 const app = require("./app");
 const connect_db = require("./config/dbConfig");
 const { PORT } = require("./config/serverConfig");
+const evaluationWorker = require("./workers/evaluationWorker");
 
 fastify.register(app);
 
@@ -23,6 +24,9 @@ async function start() {
 
     await fastify.listen({ port: PORT });
     console.log("Server is running at:", PORT);
+
+    await evaluationWorker("EvaluationQueue");
+
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

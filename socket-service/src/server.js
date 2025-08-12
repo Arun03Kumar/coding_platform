@@ -2,9 +2,12 @@ const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const Redis = require("ioredis");
+const bodyParser = require("body-parser");
 
 const app = express();
 const httpServer = createServer(app);
+
+app.use(bodyParser.json());
 
 const redisCache = new Redis();
 
@@ -28,19 +31,22 @@ io.on("connection", (socket) => {
   });
 });
 
-app.post("sendPayload", async (req, res) => {
+app.post("/sendPayload", async (req, res) => {
+  console.log("Received payload:", req.body);
   const { userId, payload } = req.body;
-  if(!userId || !payload) {
+  if (!userId || !payload) {
     return res.status(400).send("User ID and payload are required");
-  } 
-  const socketId = await redisCache.get(userId);
-  if(socketId) {
-    io.to(socketId).emit("submissionPayloadResponse", payload);
-    return res.status(200).send("Payload sent successfully");
   }
-  else {
+  const socketId = await redisCache.get(userId);
+  if (socketId) {
+    io.to(socketId).emit("submissionPayloadResponse", payload);
+    console.log("Payload sent", payload);
+    return res.status(200).send("Payload sent successfully");
+  } else {
     return res.status(404).send("User not connected");
   }
-})
+});
 
-httpServer.listen(3000);
+httpServer.listen(3005, () => {
+  console.log("Socket server is running on port 3005");
+});
