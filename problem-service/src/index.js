@@ -4,6 +4,7 @@ const { PORT } = require("./config/server.config");
 const apiRouter = require("./routes");
 const errorHandler = require("./utils/errorHandler");
 const connect_db = require("./config/db.config");
+const cors = require("cors");
 
 // const mongoose = require("mongoose");
 
@@ -12,6 +13,8 @@ const app = express();
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.text());
+
+app.use(cors({origin: "*"}));
 
 app.use("/api", apiRouter);
 

@@ -3,17 +3,22 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 const Redis = require("ioredis");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
 const httpServer = createServer(app);
 
 app.use(bodyParser.json());
+app.use(cors({
+    origin: ["http://localhost:4000", "http://localhost:5500"],
+    methods: ["GET", "POST"],
+}));
 
 const redisCache = new Redis();
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5500",
+    origin: ["http://localhost:4000", "http://localhost:5500"],
     methods: ["GET", "POST"],
   },
 });
@@ -26,7 +31,7 @@ io.on("connection", (socket) => {
 
   socket.on("getConnectionId", (userId) => {
     const connId = redisCache.get(userId);
-    conspole.log("Connection ID for user", userId, "is", connId);
+    console.log("Connection ID for user", userId, "is", connId);
     socket.emit("connectionId", connId);
   });
 });

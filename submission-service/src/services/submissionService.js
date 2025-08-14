@@ -19,7 +19,7 @@ class SubmissionService {
       throw "Submission creation error";
     }
 
-    // console.log(res.data.codeStubs, "adfhjk", submissionPayload);
+    console.log(res.data.codeStubs, "adfhjk", submissionPayload);
     const languageCodeStub = res.data.codeStubs.find(
       (codeStub) =>
         codeStub.language.toLowerCase() ===
