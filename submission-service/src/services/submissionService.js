@@ -42,7 +42,7 @@ class SubmissionService {
     if (!submission) {
       throw { message: "Not able to create submission" };
     }
-    console.log(submission);
+    console.log("from submission",submission);
     const response = await SubmissionProducer({
       [submission._id]: {
         code: submission.code,
@@ -51,6 +51,7 @@ class SubmissionService {
         outputCase: res.data.testCases[0].output,
         userId,
         submissionId: submission._id,
+          testCases: res.data.testCases,
       },
     });
     return { queueResponse: response, submission };

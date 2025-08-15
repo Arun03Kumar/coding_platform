@@ -5,4 +5,10 @@ export type SubmissionPayload = {
   outputCase?: string;
   userId: string;
   submissionId: string;
+    testCases?: TestCase[];
+};
+
+export type TestCase = {
+    input: string;
+    output: string;
 };
