@@ -10,6 +10,7 @@ class ProblemRepository {
         description: problemData.description,
         codeStubs: problemData.codeStubs,
         testCases: problemData.testCases ? problemData.testCases : [],
+        difficulty: problemData.difficulty ? problemData.difficulty : "easy",
       });
       return problem;
     } catch (err) {

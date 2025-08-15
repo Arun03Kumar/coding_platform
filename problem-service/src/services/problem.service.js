@@ -10,6 +10,7 @@ class ProblemService {
       problemData.description = sanitizeMarkdownContent(
         problemData.description
       );
+      console.log("from services", problemData);
       const problem = await this.problemRepository.createProblem(problemData);
       return problem;
     } catch (err) {
